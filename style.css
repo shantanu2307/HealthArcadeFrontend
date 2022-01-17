@@ -1,0 +1,19 @@
+body{
+    background-color: #000000;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
+.output_canvas{
+    height: 70%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #99999999;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
