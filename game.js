@@ -55,7 +55,7 @@ class Enemy extends GameObjects {
 
         this.rectangle = new Rectangle(this.flipped ? this.position.x - 34 * this.scale : this.position.x + 22 * this.scale, this.position.y + 12 * this.scale, 10 * this.animations[this.currentAnimation].scale, 18 * this.animations[this.currentAnimation].scale);
         if (Rectangle.intersects(game.player.swordRect, this.rectangle)) {
-            if (this.currentAnimation !== 'die') { game.sounds.enemyHit.play(); game.score++; }
+            if (this.currentAnimation !== 'die') { game.sounds.enemyHit.play(); game.score++; if (game.score > 30) game.score++; }
             this.playAnimation('die');
         }
 
