@@ -98,8 +98,6 @@ function onResults(results) {
       stage = "up"
       counter += 1
       game.inputTrigger.hasCurlInput = true;
-      console.log(game.inputTrigger.hasCurlInput);
-      console.log(counter);
     }
 
     drawingUtils.drawConnectors(canvasCtx, results.poseLandmarks, mpPose.POSE_CONNECTIONS, { visibilityMin: 0.65, color: 'white' });

@@ -294,6 +294,12 @@ class Game {
     constructor() {
         this.backgroundColor = '#000000';
         this.sounds = {};
+        this.scaling = 1;
+    }
+
+    setScaling(scaling) {
+        this.scaling = scaling;
+        canvas.style.setProperty('--scaleFactor', scaling);
     }
 
     run() {
@@ -324,5 +330,10 @@ class Game {
 
     draw() {
 
+    }
+
+    shake(duration = 250) {
+        canvas.style.animation = `shake 0.${duration}s`;
+        setTimeout(() => { canvas.style.animation = ''; }, duration);
     }
 }

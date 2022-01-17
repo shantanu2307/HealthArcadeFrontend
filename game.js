@@ -55,7 +55,7 @@ class Enemy extends GameObjects {
 
         this.rectangle = new Rectangle(this.flipped ? this.position.x - 34 * this.scale : this.position.x + 22 * this.scale, this.position.y + 12 * this.scale, 10 * this.animations[this.currentAnimation].scale, 18 * this.animations[this.currentAnimation].scale);
         if (Rectangle.intersects(game.player.swordRect, this.rectangle)) {
-            if (this.currentAnimation !== 'die') { game.sounds.enemyHit.play(); game.score++; if (game.score > 30) game.score++; }
+            if (this.currentAnimation !== 'die') { game.sounds.enemyHit.play(); game.score++; game.shake(100); }
             this.playAnimation('die');
         }
 
@@ -91,13 +91,13 @@ class EnemyGenerator {
     constructor() {
         this.enemies = [];
         this.enemyTimer = 0;
-        this.enemyDelay = 50; //20
+        this.enemyDelay = 45; //20
 
         this.lastSide = 'left';
     }
 
     addEnemy() {
-        var shouldCreateEnemy = Math.random() > 0.5; //0.65 (create slowly but create more often)
+        var shouldCreateEnemy = Math.random() > 0.35; //0.65 (create slowly but create more often)
 
         if (shouldCreateEnemy) {
             var side = this.lastSide === 'left' ? 'right' : 'left';
@@ -118,7 +118,7 @@ class EnemyGenerator {
 
         this.enemyTimer++;
 
-        if (this.enemyTimer > this.enemyDelay && this.enemies.length < 4) {
+        if (game.isRunning && game.player.alive && this.enemyTimer > this.enemyDelay && this.enemies.length < 4) {
             this.addEnemy();
             this.enemyTimer = 0;
         }
@@ -171,13 +171,18 @@ class Player extends GameObjects {
         if (!this.alive && this.currentAnimation !== 'die') {
             game.sounds.enemyAttack.play();
             this.playAnimation('die');
-            super.update();
-
-            return;
+            game.shake(200);
         }
 
         if (!this.alive && this.currentAnimation === 'die') {
-            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) game.preload();
+            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) { game.preload(); game.isRunning = true; }
+        }
+
+        if (!game.isRunning) {
+            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) setTimeout(() => { game.isRunning = true; }, 100);
+            
+            super.update();
+            return;
         }
 
         if (this.currentAnimation === 'idle') {
@@ -216,6 +221,8 @@ class Player extends GameObjects {
 
 var game = new Game();
 
+game.setScaling((Math.floor(window.innerHeight / 384 * 10) / 10));
+
 game.preload = function () {
     this.enemies = new EnemyGenerator();
     this.player = new Player(150, canvas.height - 50);
@@ -231,6 +238,10 @@ game.preload = function () {
     this.backgroundColor = '#222222';
 
     this.score = 0;
+    this.isRunning = false;
+
+    this.startText = "Start";
+    this.startTextPositionCounter = 0;
 }
 
 game.update = function () {
@@ -238,13 +249,16 @@ game.update = function () {
     this.player.update();
 
     this.inputTrigger.hasCurlInput = false;
+    this.startTextPositionCounter++;
 }
 
 game.draw = function () {
     this.enemies.draw();
     this.player.draw();
     Primitives2D.fillRectangle(0, 650, canvas.width, 650, '#00000066', 4);
-    Primitives2D.drawText(this.score.toString(), 150 - (this.score.toString().length * 12) / 2, 40, '#FFFFFF', '24px Arial')
+    Primitives2D.drawText(this.score.toString(), 150 - (this.score.toString().length * 18) / 2, 96, '#FFFFFF', '36px Arcadia-Regular');
+
+    if(!this.isRunning) Primitives2D.drawText(this.startText, 150 - (this.startText.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
 }
 
 game.run();
