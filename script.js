@@ -97,6 +97,8 @@ function onResults(results) {
     if (angle < 30 && stage == 'down') {
       stage = "up"
       counter += 1
+      game.inputTrigger.hasCurlInput = true;
+      console.log(game.inputTrigger.hasCurlInput);
       console.log(counter);
     }
 

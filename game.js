@@ -1,3 +1,9 @@
+class InputTrigger {
+    constructor() {
+        this.hasCurlInput = false;
+    }
+}
+
 class Enemy extends GameObjects {
     constructor(x, y, flipped) {
         super();
@@ -47,14 +53,14 @@ class Enemy extends GameObjects {
             this.alive = false;
         }
 
-        this.rectangle = new Rectangle( this.flipped ? this.position.x - 34 * this.scale : this.position.x + 22 * this.scale, this.position.y + 12 * this.scale, 10 * this.animations[this.currentAnimation].scale, 18 * this.animations[this.currentAnimation].scale);
+        this.rectangle = new Rectangle(this.flipped ? this.position.x - 34 * this.scale : this.position.x + 22 * this.scale, this.position.y + 12 * this.scale, 10 * this.animations[this.currentAnimation].scale, 18 * this.animations[this.currentAnimation].scale);
         if (Rectangle.intersects(game.player.swordRect, this.rectangle)) {
-            if (this.currentAnimation !== 'die') game.sounds.enemyHit.play();
-            this.playAnimation('die'); 
+            if (this.currentAnimation !== 'die') { game.sounds.enemyHit.play(); game.score++; }
+            this.playAnimation('die');
         }
 
         if (Rectangle.intersects(game.player.enemyArea, this.rectangle)) {
-            if (this.currentAnimation === 'walk') this.playAnimation('attack'); 
+            if (this.currentAnimation === 'walk') this.playAnimation('attack');
         }
 
         if (this.currentAnimation === 'attack' && this.animations.attack.currentFrame === 2 && this.canPlayAttackSound && game.player.currentAnimation !== 'die') {
@@ -76,7 +82,7 @@ class Enemy extends GameObjects {
     }
 
     draw() {
-        Primitives2D.fillRectangle(this.rectangle.x, this.rectangle.y, this.rectangle.width, this.rectangle.height, '#FF000044');
+        /*Primitives2D.fillRectangle(this.rectangle.x, this.rectangle.y, this.rectangle.width, this.rectangle.height, '#FF000044');*/
         super.draw();
     }
 }
@@ -169,7 +175,11 @@ class Player extends GameObjects {
 
             return;
         }
-        
+
+        if (!this.alive && this.currentAnimation === 'die') {
+            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) game.preload();
+        }
+
         if (this.currentAnimation === 'idle') {
             if (this.animations.idle.currentFrame === 3 && this.canPlayBloodSound) {
                 game.sounds.playerBlood.play();
@@ -180,7 +190,7 @@ class Player extends GameObjects {
             }
         }
 
-        if (this.keyboardState.isKeyDown('Space') && ( this.currentAnimation === 'idle' || ( this.currentAnimation === 'attack' && this.animations.attack.currentFrame > 8 ) )) {
+        if ((this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) && (this.currentAnimation === 'idle' || (this.currentAnimation === 'attack' && this.animations.attack.currentFrame > 8))) {
             this.playAnimation('attack');
             this.flipped = !this.flipped;
 
@@ -198,17 +208,19 @@ class Player extends GameObjects {
     }
 
     draw() {
-        Primitives2D.fillRectangle(this.swordRect.x, this.swordRect.y, this.swordRect.width, this.swordRect.height, '#FF000044');
-        Primitives2D.fillRectangle(this.enemyArea.x, this.enemyArea.y, this.enemyArea.width, this.enemyArea.height, '#FFFFFF44');
+        /*Primitives2D.fillRectangle(this.swordRect.x, this.swordRect.y, this.swordRect.width, this.swordRect.height, '#FF000044');
+        Primitives2D.fillRectangle(this.enemyArea.x, this.enemyArea.y, this.enemyArea.width, this.enemyArea.height, '#FFFFFF44');*/
         super.draw();
     }
 }
 
 var game = new Game();
 
-game.preload = function() {
+game.preload = function () {
     this.enemies = new EnemyGenerator();
     this.player = new Player(150, canvas.height - 50);
+
+    this.inputTrigger = new InputTrigger();
 
     this.sounds.playerAttack = new Howl({ src: ['PlayerAttack.mp3'] });
     this.sounds.enemyHit = new Howl({ src: ['EnemyHit.mp3'] });
@@ -218,18 +230,21 @@ game.preload = function() {
 
     this.backgroundColor = '#222222';
 
-    console.log(canvas.width, canvas.height);
+    this.score = 0;
 }
 
-game.update = function() {
+game.update = function () {
     this.enemies.update();
     this.player.update();
+
+    this.inputTrigger.hasCurlInput = false;
 }
 
-game.draw = function() {
+game.draw = function () {
     this.enemies.draw();
     this.player.draw();
     Primitives2D.fillRectangle(0, 650, canvas.width, 650, '#00000066', 4);
+    Primitives2D.drawText(this.score.toString(), 150 - (this.score.toString().length * 12) / 2, 40, '#FFFFFF', '24px Arial')
 }
 
 game.run();
