@@ -91,13 +91,13 @@ class EnemyGenerator {
     constructor() {
         this.enemies = [];
         this.enemyTimer = 0;
-        this.enemyDelay = 20;
+        this.enemyDelay = 50; //20
 
         this.lastSide = 'left';
     }
 
     addEnemy() {
-        var shouldCreateEnemy = Math.random() > 0.65;
+        var shouldCreateEnemy = Math.random() > 0.5; //0.65 (create slowly but create more often)
 
         if (shouldCreateEnemy) {
             var side = this.lastSide === 'left' ? 'right' : 'left';
