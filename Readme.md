@@ -1,1 +1,1 @@
-      https://healtharcade.herokuapp.com/index.html
+      https://healtharcade.herokuapp.com/
