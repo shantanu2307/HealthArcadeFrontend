@@ -174,7 +174,7 @@ class Player extends GameObjects {
         }
 
         if (!this.alive && this.currentAnimation === 'die') {
-            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) { game.menuMusic.volume = 0; game.preload(); game.isRunning = true; }
+            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) { game.music.menuMusic.volume = 0; game.preload(); game.isRunning = true; }
         }
 
         if (!game.isRunning) {
