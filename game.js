@@ -55,7 +55,7 @@ class Enemy extends GameObjects {
 
         this.rectangle = new Rectangle(this.flipped ? this.position.x - 34 * this.scale : this.position.x + 22 * this.scale, this.position.y + 12 * this.scale, 10 * this.animations[this.currentAnimation].scale, 18 * this.animations[this.currentAnimation].scale);
         if (Rectangle.intersects(game.player.swordRect, this.rectangle)) {
-            if (this.currentAnimation !== 'die') { game.sounds.enemyHit.play(); game.score++; game.shake(100); }
+            if (this.currentAnimation !== 'die') { game.sounds.enemyHit.play(); game.sounds.enemyDie.play(); game.score++; game.shake(100); }
             this.playAnimation('die');
         }
 
@@ -82,7 +82,6 @@ class Enemy extends GameObjects {
     }
 
     draw() {
-        /*Primitives2D.fillRectangle(this.rectangle.x, this.rectangle.y, this.rectangle.width, this.rectangle.height, '#FF000044');*/
         super.draw();
     }
 }
@@ -91,13 +90,13 @@ class EnemyGenerator {
     constructor() {
         this.enemies = [];
         this.enemyTimer = 0;
-        this.enemyDelay = 45; //20
+        this.enemyDelay = 120; //20
 
         this.lastSide = 'left';
     }
 
     addEnemy() {
-        var shouldCreateEnemy = Math.random() > 0.35; //0.65 (create slowly but create more often)
+        var shouldCreateEnemy = Math.random() > 0.15; //0.65 (create slowly but create more often)
 
         if (shouldCreateEnemy) {
             var side = this.lastSide === 'left' ? 'right' : 'left';
@@ -213,8 +212,6 @@ class Player extends GameObjects {
     }
 
     draw() {
-        /*Primitives2D.fillRectangle(this.swordRect.x, this.swordRect.y, this.swordRect.width, this.swordRect.height, '#FF000044');
-        Primitives2D.fillRectangle(this.enemyArea.x, this.enemyArea.y, this.enemyArea.width, this.enemyArea.height, '#FFFFFF44');*/
         super.draw();
     }
 }
@@ -222,6 +219,8 @@ class Player extends GameObjects {
 var game = new Game();
 
 game.setScaling((Math.floor(window.innerHeight / 384 * 10) / 10));
+
+var gameLoaded = false;
 
 game.preload = function () {
     this.enemies = new EnemyGenerator();
@@ -233,32 +232,103 @@ game.preload = function () {
     this.sounds.enemyHit = new Howl({ src: ['EnemyHit.mp3'] });
     this.sounds.enemySwing = new Howl({ src: ['EnemySwing.mp3'] });
     this.sounds.enemyAttack = new Howl({ src: ['EnemyAttack.mp3'] });
+    this.sounds.enemyDie = new Howl({ src: ['EnemyDie.mp3'], volume: 0.25 });
     this.sounds.playerBlood = new Howl({ src: ['Blood.mp3'], volume: 0.1 });
 
-    this.backgroundColor = '#222222';
+    this.music.menuMusic = new Howl({ src: ['MenuMusic.wav'], loop: true, volume: 0.05 });
+    this.music.menuMusic.play();
+
+    this.backgroundColor = '#1A1A1A';
 
     this.score = 0;
+    this.highScore = this.read('score');
+
+    this.tutorialShown = this.read('tutorialShown') ? true : false;
+
+    this.currentGameState = this.tutorialShown ? 'game' : 'tutorial';
+
     this.isRunning = false;
 
     this.startText = "Start";
+    this.tutorialTexts = ['Do a rep to attack', 'Keep attacking to proceed', 'Attacks switch direction', 'Time attacks to hit enemies', 'Attacking after death restarts', 'Attack to begin game'];
+    this.tutorialIndex = 0;
+
+    this.keyboardState = new KeyboardState();
+
     this.startTextPositionCounter = 0;
+
+    this.ground = new Image();
+    this.ground.src = './GroundAlt.png';
 }
 
 game.update = function () {
+    gameLoaded ? this.currentGameState === 'tutorial' ? this.updateTutorial() : this.updateGame() : this.updateLoading();
+}
+
+game.updateLoading = function () {
+    this.startTextPositionCounter++;
+}
+
+game.updateGame = function () {
     this.enemies.update();
     this.player.update();
 
     this.inputTrigger.hasCurlInput = false;
     this.startTextPositionCounter++;
+
+    if (this.score > this.highScore) {
+        this.highScore = this.score;
+        this.save('score', this.highScore);
+    }
+}
+
+game.updateTutorial = function () {
+    this.player.update();
+
+    if ((this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) && this.isRunning) this.tutorialIndex++;
+
+    if (this.tutorialIndex === this.tutorialTexts.length) {
+        this.save('tutorialShown', true);
+        this.currentGameState = 'game';
+    }
+
+    this.inputTrigger.hasCurlInput = false;
+    this.keyboardState.resetKeyboardState();
+    this.startTextPositionCounter++;
 }
 
 game.draw = function () {
+    gameLoaded ? this.currentGameState === 'tutorial' ? this.drawTutorial() : this.drawGame() : this.drawLoading();
+}
+
+game.drawLoading = function () {
+    Primitives2D.drawText('Loading Game', 150 - ('Loading Game'.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
+}
+
+game.drawGame = function () {
+    SpriteBatch.draw(this.ground, new Rectangle(0, canvas.height - 36, canvas.width, 36));
     this.enemies.draw();
     this.player.draw();
-    Primitives2D.fillRectangle(0, 650, canvas.width, 650, '#00000066', 4);
+
     Primitives2D.drawText(this.score.toString(), 150 - (this.score.toString().length * 18) / 2, 96, '#FFFFFF', '36px Arcadia-Regular');
 
+    if (!this.player.alive) { 
+        Primitives2D.drawText('Best', 150 - ('Best'.length * 9) / 2, 220 + 3 * Math.sin((this.startTextPositionCounter + 64) / 6), '#FFFFFF', '12px Arcadia-Regular');
+        Primitives2D.drawText(this.highScore.toString(), 150 - (this.highScore.toString().length * 32) / 2, 272 + 3 * Math.sin((this.startTextPositionCounter + 64) / 6), '#FFFFFF', '48px Arcadia-Regular');
+
+        if (this.score === this.highScore) Primitives2D.drawText('New Best', 150 - ('New Best'.length * 9) / 2, 298 + 3 * Math.sin((this.startTextPositionCounter + 64) / 6), '#FFFFFF', '12px Arcadia-Regular');
+    }
+
     if(!this.isRunning) Primitives2D.drawText(this.startText, 150 - (this.startText.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
+}
+
+game.drawTutorial = function () {
+    this.player.draw();
+
+    if(!this.isRunning) Primitives2D.drawText(this.startText, 150 - (this.startText.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
+    else {
+        Primitives2D.drawText(this.tutorialTexts[this.tutorialIndex], 150 - (this.tutorialTexts[this.tutorialIndex].length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 16), '#FFFFFF', '12px Arcadia-Regular');
+    }
 }
 
 game.run();

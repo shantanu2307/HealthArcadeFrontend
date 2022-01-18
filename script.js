@@ -48,6 +48,7 @@ const grid = new LandmarkGrid(landmarkContainer, {
 });
 let activeEffect = 'mask';
 function onResults(results) {
+  gameLoaded = true;
   // Hide the spinner.
   document.body.classList.add('loaded');
   // Update the frame rate.
@@ -126,12 +127,12 @@ pose.onResults(onResults);
 new controls
   .ControlPanel(controlsElement, {
     selfieMode: true,
-    modelComplexity: 1,
-    smoothLandmarks: true,
+    modelComplexity: 0,//1
+    smoothLandmarks: false,//true
     enableSegmentation: false,
-    smoothSegmentation: true,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5,
+    smoothSegmentation: false,//true
+    minDetectionConfidence: 0.8,//0.5
+    minTrackingConfidence: 0.8,//0.5
     effect: 'background',
   })
   .add([
