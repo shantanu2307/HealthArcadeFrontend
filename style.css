@@ -1,9 +1,51 @@
-body{
+body {
     background-color: #000000;
     overflow: hidden;
 }
 
-.output_canvas{
+.square-box {
+    width: 33%;
+    height: 0;
+    padding-top: 33%;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+.square-boxx {
+    width: 33%;
+    height: 0;
+    padding-top: 33%;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.landmark-grid-container {
+    height: 70%;
+    width: 70%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #99999999;
+}
+
+.page {  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: #FFFFFF;
+    font-family: 'Arcadia-Regular';
+}
+
+.page h3 {
+    font-size: xx-large;
+    margin-top: 2em;
+}
+
+.output_canvas {
     height: 65%;
     border-radius: 0.5em;
 
@@ -13,7 +55,7 @@ body{
     background-color: #000000;
 }
 
-.container{
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,7 +63,7 @@ body{
     height: 100vh;
 }
 
-#canvas{
+#canvas {
     --scaleFactor: 1;
     transform: scale(var(--scaleFactor));
 }

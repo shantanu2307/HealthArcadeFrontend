@@ -31,6 +31,10 @@ class KeyboardState {
     isKeyUp(key) {
         return !this.keys[key];
     }
+
+    resetKeyboardState() {
+        this.keys = {};
+    }
 }
 
 class Vector2 {
@@ -200,6 +204,22 @@ class Primitives2D {
     }
 }
 
+class SpriteBatch {
+    /*static draw(texture, destinationRect, sourceRect = new Rectangle(0, 0, texture.width, texture.height), flipped = false, origin = Vector2.zero, scale = 0) {
+        ctx.save();
+
+        destinationRect.x = flipped ? (destinationRect.x + origin.x * scale / 2 ) * -1 : destinationRect.x - origin.x * scale / 2;
+        ctx.scale(flipped ? -1 : 1, 1);
+        ctx.drawImage(texture, sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destinationRect.x, destinationRect.y - origin.y * scale, destinationRect.width * scale, destinationRect.height * scale);
+
+        ctx.restore();
+    }*/
+
+    static draw(texture, destinationRect) {
+        ctx.drawImage(texture, destinationRect.x, destinationRect.y, destinationRect.width, destinationRect.height);
+    }
+}
+
 class Animation {
     constructor(texture, frameWidth, frameRate = 4, looping = false, scale = 1, nextAnimation = '') {
         this.texture = texture;
@@ -295,11 +315,21 @@ class Game {
         this.backgroundColor = '#000000';
         this.sounds = {};
         this.scaling = 1;
+
+        this.music = {};
     }
 
     setScaling(scaling) {
         this.scaling = scaling;
         canvas.style.setProperty('--scaleFactor', scaling);
+    }
+
+    save(key, value) {
+        window.localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    read(key) {
+        return JSON.parse(window.localStorage.getItem(key)) ? JSON.parse(window.localStorage.getItem(key)) : null;
     }
 
     run() {
