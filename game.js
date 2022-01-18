@@ -236,7 +236,7 @@ game.preload = function () {
     this.sounds.playerBlood = new Howl({ src: ['Blood.mp3'], volume: 0.1 });
 
     this.music.menuMusic = new Howl({ src: ['MenuMusic.wav'], loop: true, volume: 0.05 });
-    this.music.menuMusic.play();
+    this.music.menuMusic.stop();
 
     this.backgroundColor = '#1A1A1A';
 
@@ -259,6 +259,8 @@ game.preload = function () {
 
     this.ground = new Image();
     this.ground.src = './GroundAlt.png';
+
+    this.music.menuMusic.play();
 }
 
 game.update = function () {
