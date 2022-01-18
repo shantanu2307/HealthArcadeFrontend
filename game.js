@@ -323,6 +323,7 @@ game.drawGame = function () {
 }
 
 game.drawTutorial = function () {
+    SpriteBatch.draw(this.ground, new Rectangle(0, canvas.height - 36, canvas.width, 36));
     this.player.draw();
 
     if(!this.isRunning) Primitives2D.drawText(this.startText, 150 - (this.startText.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
