@@ -174,7 +174,7 @@ class Player extends GameObjects {
         }
 
         if (!this.alive && this.currentAnimation === 'die') {
-            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) { game.preload(); game.isRunning = true; }
+            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) { game.menuMusic.volume = 0; game.preload(); game.isRunning = true; }
         }
 
         if (!game.isRunning) {
@@ -236,7 +236,6 @@ game.preload = function () {
     this.sounds.playerBlood = new Howl({ src: ['Blood.mp3'], volume: 0.1 });
 
     this.music.menuMusic = new Howl({ src: ['MenuMusic.wav'], loop: true, volume: 0.05 });
-    this.music.menuMusic.stop();
 
     this.backgroundColor = '#1A1A1A';
 
