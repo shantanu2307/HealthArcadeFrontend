@@ -236,7 +236,7 @@ game.preload = function () {
     this.sounds.playerBlood = new Howl({ src: ['Blood.mp3'], volume: 0.1 });
 
     this.music.menuMusic = new Howl({ src: ['MenuMusic.wav'], loop: true, volume: 0.05 });
-    this.music.menuMusic.play();
+    this.music.menuMusic.stop();
 
     this.backgroundColor = '#1A1A1A';
 
@@ -259,6 +259,8 @@ game.preload = function () {
 
     this.ground = new Image();
     this.ground.src = './GroundAlt.png';
+
+    this.music.menuMusic.play();
 }
 
 game.update = function () {
@@ -323,6 +325,7 @@ game.drawGame = function () {
 }
 
 game.drawTutorial = function () {
+    SpriteBatch.draw(this.ground, new Rectangle(0, canvas.height - 36, canvas.width, 36));
     this.player.draw();
 
     if(!this.isRunning) Primitives2D.drawText(this.startText, 150 - (this.startText.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
