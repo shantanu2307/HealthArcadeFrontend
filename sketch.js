@@ -132,6 +132,33 @@ function draw() {
     stroke(255);
     line(a.x, a.y, b.x, b.y);
 
+
+    a = poses[0].keypoints[12];
+    b = poses[0].keypoints[14];
+    strokeWeight(2);
+    stroke(255);
+    line(a.x, a.y, b.x, b.y);
+
+    a = poses[0].keypoints[14];
+    b = poses[0].keypoints[16];
+    strokeWeight(2);
+    stroke(255);
+    line(a.x, a.y, b.x, b.y);
+
+    a = poses[0].keypoints[11];
+    b = poses[0].keypoints[13];
+    strokeWeight(2);
+    stroke(255);
+    line(a.x, a.y, b.x, b.y);
+
+    a = poses[0].keypoints[13];
+    b = poses[0].keypoints[15];
+    strokeWeight(2);
+    stroke(255);
+    line(a.x, a.y, b.x, b.y);
+
+    //Curl Detection 
+
     //Left Side
     var shoulder = poses[0].keypoints[5];
     var elbow = poses[0].keypoints[7];
@@ -156,6 +183,47 @@ function draw() {
     }
     if ((angle1 < 30 && angle2 < 30) && stage == 'down') {
       stage = "up"
+      counter += 1
+      game.inputTrigger.hasCurlInput = true;
+    }
+
+    //Squat Detection 
+
+
+    //Left side
+    leftShoulder = poses[0].keypoints[5];
+    var leftHip = poses[0].keypoints[11];
+    var leftKnee = poses[0].keypoints[13];
+    var leftAnkle = poses[0].keypoints[15];
+
+
+    leftShoulder = [leftShoulder.x, leftShoulder.y];
+    leftHip = [leftHip.x, leftHip.y];
+    leftKnee = [leftKnee.x, leftKnee.y];
+    leftAnkle = [leftAnkle.x, leftAnkle.y];
+
+    var angleKnee1 = calculateAngle(leftHip, leftKnee, leftAnkle);
+
+    //RightSide
+    rightShoulder = poses[0].keypoints[6];
+    var rightHip = poses[0].keypoints[12];
+    var rightKnee = poses[0].keypoints[14];
+    var rightAnkle = poses[0].keypoints[16];
+
+
+    rightShoulder = [rightShoulder.x, rightShoulder.y];
+    rightHip = [rightHip.x, rightHip.y];
+    rightKnee = [rightKnee.x, rightKnee.y];
+    rightAnkle = [rightAnkle.x, rightAnkle.y];
+
+    var angleKnee2 = calculateAngle(rightHip, rightKnee, rightAnkle);
+
+    if ((angleKnee1 > 120) && (angleKnee2 > 120)) {
+      stage = "upPosn"
+    }
+
+    if ((angleKnee1 <= 90 && angleKnee2 <= 90) && stage == 'upPosn') {
+      stage = "downPosn"
       counter += 1
       game.inputTrigger.hasCurlInput = true;
     }
