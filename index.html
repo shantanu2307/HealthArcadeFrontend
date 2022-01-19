@@ -17,9 +17,14 @@
     <script src="pose-detection"></script>
   </head>
   <body>
-    <div class="container">
-      <canvas class="game" id="canvas" height="384px"></canvas>
-      <div class="loading"></div>
+    <div style="display: flex; justify-content: center; align-content: center">
+      <div class="container">
+        <canvas class="game" id="canvas" height="384px"></canvas>
+        <div class="loading"></div>
+      </div>
+      <div id="alpha">
+        <canvas id="mycanvas"></canvas>
+      </div>
     </div>
     <script src="./engine.js"></script>
     <script src="./game.js"></script>
