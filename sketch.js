@@ -227,6 +227,24 @@ function draw() {
       counter += 1
       game.inputTrigger.hasCurlInput = true;
     }
+
+
+
+    // PushUp
+    leftShoulder = poses[0].keypoints[5];
+    rightShoulder = poses[0].keypoints[6];
+    leftElbow = poses[0].keypoints[7];
+    rightElbow = poses[0].keypoints[8];
+    if ((rightShoulder.y >= rightElbow.y) && (leftShoulder.y >= leftElbow.y)) {
+      stage = "pushDown";
+    }
+
+    if (((rightShoulder.y < rightElbow.y) && (leftShoulder.y < leftElbow.y)) && (stage == "pushDown")) {
+      counter += 1;
+      stage = "pushUp";
+      game.inputTrigger.hasCurlInput = true;
+    }
+
   }
 
 }
