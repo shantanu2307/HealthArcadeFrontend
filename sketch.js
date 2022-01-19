@@ -23,6 +23,7 @@ async function init() {
 async function videoReady() {
   console.log('video ready')
   gameLoaded = true;
+  game.currentState = 'tutorial';
   await getPoses();
 }
 
@@ -131,23 +132,31 @@ function draw() {
     stroke(255);
     line(a.x, a.y, b.x, b.y);
 
-
-
+    //Left Side
     var shoulder = poses[0].keypoints[5];
     var elbow = poses[0].keypoints[7];
     var wrist = poses[0].keypoints[9];
-    shoulder = [shoulder.x, shoulder.y]
-    elbow = [elbow.x, elbow.y]
-    wrist = [wrist.x, wrist.y]
-    var angle = calculateAngle(shoulder, elbow, wrist);
+    var leftShoulder = [shoulder.x, shoulder.y]
+    var leftElbow = [elbow.x, elbow.y]
+    var leftWrist = [wrist.x, wrist.y]
+    var angle1 = calculateAngle(leftShoulder, leftElbow, leftWrist);
 
-    if (angle > 160) {
+    //Right Side
+    shoulder = poses[0].keypoints[6];
+    elbow = poses[0].keypoints[8];
+    wrist = poses[0].keypoints[10];
+    var rightShoulder = [shoulder.x, shoulder.y]
+    var rightElbow = [elbow.x, elbow.y]
+    var rightWrist = [wrist.x, wrist.y]
+    var angle2 = calculateAngle(rightShoulder, rightElbow, rightWrist);
+
+
+    if ((angle1 > 160 && angle2 > 160)) {
       stage = "down"
     }
-    if (angle < 30 && stage == 'down') {
+    if ((angle1 < 30 && angle2 < 30) && stage == 'down') {
       stage = "up"
       counter += 1
-      console.log(counter);
       game.inputTrigger.hasCurlInput = true;
     }
   }
