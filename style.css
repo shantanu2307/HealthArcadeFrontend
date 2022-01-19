@@ -3,32 +3,10 @@ body {
     overflow: hidden;
 }
 
-.square-box {
-    width: 33%;
-    height: 0;
-    padding-top: 33%;
-    position: absolute;
-    right: 20px;
-    top: 20px;
+canvas{
+    display: block;
 }
 
-.square-boxx {
-    width: 33%;
-    height: 0;
-    padding-top: 33%;
-    position: absolute;
-    left: 20px;
-    top: 20px;
-}
-
-.landmark-grid-container {
-    height: 70%;
-    width: 70%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #99999999;
-}
 
 .page {  
     display: flex;
@@ -45,15 +23,6 @@ body {
     margin-top: 2em;
 }
 
-.output_canvas {
-    height: 65%;
-    border-radius: 0.5em;
-
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #000000;
-}
 
 .container {
     display: flex;
