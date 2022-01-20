@@ -4,6 +4,23 @@ class InputTrigger {
     }
 }
 
+class Blood extends GameObjects {
+    constructor (x, y, flipped) {
+        super();
+
+        var bloodSprite = new Image();
+        bloodSprite.src = './Blood2.png';
+
+        this.scale = 0.5;
+        this.flipped = flipped;
+
+        this.position = new Vector2(x, y);
+
+        this.animations.splash = new Animation(bloodSprite, 110, 4, false, this.scale, '', 0.6);
+        this.playAnimation('splash');
+    }
+}
+
 class Enemy extends GameObjects {
     constructor(x, y, flipped) {
         super();
@@ -37,6 +54,8 @@ class Enemy extends GameObjects {
         this.speed = new Vector2(2, 0);
 
         this.canPlayAttackSound = true;
+
+        this.bloods = [];
     }
 
     update() {
@@ -55,7 +74,15 @@ class Enemy extends GameObjects {
 
         this.rectangle = new Rectangle(this.flipped ? this.position.x - 34 * this.scale : this.position.x + 22 * this.scale, this.position.y + 12 * this.scale, 10 * this.animations[this.currentAnimation].scale, 18 * this.animations[this.currentAnimation].scale);
         if (Rectangle.intersects(game.player.swordRect, this.rectangle)) {
-            if (this.currentAnimation !== 'die') { game.sounds.enemyHit.play(); game.sounds.enemyDie.play(); game.score++; game.shake(100); }
+            if (this.currentAnimation !== 'die') { 
+                game.sounds.enemyHit.play(); 
+                game.sounds.enemyDie.play(); 
+                game.score++; 
+                game.shake(100); 
+
+                this.bloods.push(new Blood( this.flipped ? this.position.x - 2.5 * this.rectangle.width : this.position.x + 2.5 * this.rectangle.width, this.position.y, !this.flipped));
+            }
+
             this.playAnimation('die');
         }
 
@@ -78,19 +105,27 @@ class Enemy extends GameObjects {
 
         if (this.animations.die.finishedPlaying) this.alive = false;
 
+        this.bloods.forEach((blood) => {
+            blood.update();
+        })
+
         super.update();
     }
 
     draw() {
         super.draw();
+
+        this.bloods.forEach((blood) => {
+            blood.draw();
+        });      
     }
 }
 
 class EnemyGenerator {
     constructor() {
         this.enemies = [];
-        this.enemyTimer = 0;
-        this.enemyDelay = 120; //20
+        this.enemyTimer = 100;
+        this.enemyDelay = 100; //20
 
         this.lastSide = 'left';
     }
@@ -171,14 +206,19 @@ class Player extends GameObjects {
             game.sounds.enemyAttack.play();
             this.playAnimation('die');
             game.shake(200);
+
+            game.music.gameMusic.stop();
+            game.music.menuMusic.play();
         }
 
         if (!this.alive && this.currentAnimation === 'die') {
-            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) { game.music.menuMusic.stop(); game.preload(); game.isRunning = true; }
+            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) { game.music.menuMusic.stop(); game.preload(); game.isRunning = true; game.music.menuMusic.stop(); game.music.gameMusic.play(); }
         }
 
         if (!game.isRunning) {
-            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) setTimeout(() => { game.isRunning = true; }, 100);
+            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) {
+                setTimeout(() => { game.isRunning = true; game.music.gameMusic.play(); game.music.menuMusic.stop(); }, 100);
+            }
             
             super.update();
             return;
@@ -235,7 +275,8 @@ game.preload = function () {
     this.sounds.enemyDie = new Howl({ src: ['EnemyDie.mp3'], volume: 0.25 });
     this.sounds.playerBlood = new Howl({ src: ['Blood.mp3'], volume: 0.1 });
 
-    this.music.menuMusic = new Howl({ src: ['MenuMusic.wav'], loop: true, volume: 0.05 });
+    this.music.menuMusic = new Howl({ src: ['Ruins.mp3'], loop: true, volume: 0.1 });
+    this.music.gameMusic = new Howl({ src: ['Sorrows.mp3'], loop: true, volume: 0.25 });
 
     this.backgroundColor = '#1A1A1A';
 
@@ -304,6 +345,7 @@ game.draw = function () {
 
 game.drawLoading = function () {
     Primitives2D.drawText('Loading Game', 150 - ('Loading Game'.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
+    Primitives2D.drawText('Please allow camera access', 150 - ('Please allow camera access'.length * 5.75) / 2, 320 + 6 * Math.sin((this.startTextPositionCounter + 64) / 12), '#FFFFFF', '8px Arcadia-Regular');
 }
 
 game.drawGame = function () {
