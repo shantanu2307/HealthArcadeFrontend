@@ -166,21 +166,23 @@ function draw() {
     //Jump-Crouch Detection 
 
     //Left side
-    leftShoulder = Number(poses[0].keypoints[5].y);
+    /*leftShoulder = Number(poses[0].keypoints[5].y);
     //Right Side
     rightShoulder = Number(poses[0].keypoints[6].y);
-    console.log(leftShoulder, rightShoulder);
     var mid = Number((leftShoulder + rightShoulder) / 2);
+    console.log(mid);
     var upperBound = 355;
-    var lowerBound = 100;
+    var lowerBound = 150;*/
 
-    if (mid < lowerBound) {
+    /*if (mid < lowerBound) {
       stage2 = "jump";
-    }
-    else if ((mid > upperBound) && (stage == "jump")) {
-      stag2 = "crouch";
       game.inputTrigger.hasCurlInput = true;
     }
+    
+    if (mid > upperBound) {
+      stage2 = "crouch";
+      game.inputTrigger.hasCurlInput = true;
+    }*/
 
   }
 

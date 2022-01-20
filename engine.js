@@ -221,7 +221,7 @@ class SpriteBatch {
 }
 
 class Animation {
-    constructor(texture, frameWidth, frameRate = 4, looping = false, scale = 1, nextAnimation = '') {
+    constructor(texture, frameWidth, frameRate = 4, looping = false, scale = 1, nextAnimation = '', opacity = 1) {
         this.texture = texture;
         this.frameWidth = frameWidth;
         this.frameRate = frameRate;
@@ -231,6 +231,7 @@ class Animation {
 
         this.time = 0;
         this.scale = scale;
+        this.opacity = opacity;
 
         this.finishedPlaying = false;
         this.nextAnimation = nextAnimation;
@@ -265,6 +266,7 @@ class Animation {
 
         x = flipped ? (x + origin.x * this.scale / 2 ) * -1 : x - origin.x * this.scale / 2;
         ctx.scale(flipped ? -1 : 1, 1);
+        ctx.globalAlpha = this.opacity;
         ctx.drawImage(this.texture, this.currentFrame * this.frameWidth, 0, this.frameWidth, this.texture.height, x, y - origin.y * this.scale, this.frameWidth * this.scale, this.texture.height * this.scale);
 
         ctx.restore();
