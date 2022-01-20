@@ -1,65 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HealthArcade</title>
-    <link rel="stylesheet" href="./style.css" />
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"
       integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.css"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.2/control_utils_3d.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.6/control_utils.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3/drawing_utils.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4/pose.js"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d@0.2/landmark_grid.css"
-      crossorigin="anonymous"
-    />
+    <script src="p5.js"></script>
+    <script src="p5.sound.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <meta charset="utf-8" />
+    <script src="tfjs-core"></script>
+    <script src="tfjs-converter"></script>
+    <script src="tfjs-backend-webgl"></script>
+    <script src="pose-detection"></script>
   </head>
   <body>
-    <div class="square-boxx">
-      <video class="input_video"></video>
-      <canvas class="output_canvas"></canvas>
-    </div>
-    <div class="container">
-      <canvas class="game" id="canvas" height="384px"></canvas>
-      <div class="loading"></div>
-    </div>
-    <div class="control-panel" style="display: none;"></div>
-    <div class="square-box" style="display: none;">
-      <div class="landmark-grid-container"></div>
+    <div style="display: flex; justify-content: center; align-content: center">
+      <div class="container">
+        <canvas class="game" id="canvas" height="384px"></canvas>
+        <div class="loading"></div>
+      </div>
+      <div id="alpha">
+        <canvas id="mycanvas"></canvas>
+      </div>
     </div>
     <script src="./engine.js"></script>
     <script src="./game.js"></script>
-    <script type="module" src="./script.js"></script>
+    <script src="./sketch.js"></script>
   </body>
 </html>
