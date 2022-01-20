@@ -8,8 +8,6 @@ function calculateAngle(a, b, c) {
   return angle
 }
 
-
-
 var counter = 0
 var stage = ""
 const controls = window;
@@ -88,9 +86,6 @@ function onResults(results) {
     elbow = [elbow.x, elbow.y]
     wrist = [wrist.x, wrist.y]
     var angle = calculateAngle(shoulder, elbow, wrist);
-
-
-
 
     if (angle > 160) {
       stage = "down"
