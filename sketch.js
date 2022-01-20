@@ -3,6 +3,7 @@ let detector;
 let poses;
 let video;
 let stage = ""
+let stage2 = ""
 let counter = 0;
 let can;
 function calculateAngle(a, b, c) {
@@ -132,31 +133,6 @@ function draw() {
     stroke(255);
     line(a.x, a.y, b.x, b.y);
 
-
-    a = poses[0].keypoints[12];
-    b = poses[0].keypoints[14];
-    strokeWeight(2);
-    stroke(255);
-    line(a.x, a.y, b.x, b.y);
-
-    a = poses[0].keypoints[14];
-    b = poses[0].keypoints[16];
-    strokeWeight(2);
-    stroke(255);
-    line(a.x, a.y, b.x, b.y);
-
-    a = poses[0].keypoints[11];
-    b = poses[0].keypoints[13];
-    strokeWeight(2);
-    stroke(255);
-    line(a.x, a.y, b.x, b.y);
-
-    a = poses[0].keypoints[13];
-    b = poses[0].keypoints[15];
-    strokeWeight(2);
-    stroke(255);
-    line(a.x, a.y, b.x, b.y);
-
     //Curl Detection 
 
     //Left Side
@@ -187,61 +163,22 @@ function draw() {
       game.inputTrigger.hasCurlInput = true;
     }
 
-    //Squat Detection 
-
+    //Jump-Crouch Detection 
 
     //Left side
-    leftShoulder = poses[0].keypoints[5];
-    var leftHip = poses[0].keypoints[11];
-    var leftKnee = poses[0].keypoints[13];
-    var leftAnkle = poses[0].keypoints[15];
+    leftShoulder = Number(poses[0].keypoints[5].y);
+    //Right Side
+    rightShoulder = Number(poses[0].keypoints[6].y);
+    console.log(leftShoulder, rightShoulder);
+    var mid = Number((leftShoulder + rightShoulder) / 2);
+    var upperBound = 355;
+    var lowerBound = 100;
 
-
-    leftShoulder = [leftShoulder.x, leftShoulder.y];
-    leftHip = [leftHip.x, leftHip.y];
-    leftKnee = [leftKnee.x, leftKnee.y];
-    leftAnkle = [leftAnkle.x, leftAnkle.y];
-
-    var angleKnee1 = calculateAngle(leftHip, leftKnee, leftAnkle);
-
-    //RightSide
-    rightShoulder = poses[0].keypoints[6];
-    var rightHip = poses[0].keypoints[12];
-    var rightKnee = poses[0].keypoints[14];
-    var rightAnkle = poses[0].keypoints[16];
-
-
-    rightShoulder = [rightShoulder.x, rightShoulder.y];
-    rightHip = [rightHip.x, rightHip.y];
-    rightKnee = [rightKnee.x, rightKnee.y];
-    rightAnkle = [rightAnkle.x, rightAnkle.y];
-
-    var angleKnee2 = calculateAngle(rightHip, rightKnee, rightAnkle);
-
-    if ((angleKnee1 > 120) && (angleKnee2 > 120)) {
-      stage = "upPosn"
+    if (mid < lowerBound) {
+      stage2 = "jump";
     }
-
-    if ((angleKnee1 <= 90 && angleKnee2 <= 90) && stage == 'upPosn') {
-      stage = "downPosn"
-      counter += 1
-      game.inputTrigger.hasCurlInput = true;
-    }
-
-
-
-    // PushUp
-    leftShoulder = poses[0].keypoints[5];
-    rightShoulder = poses[0].keypoints[6];
-    leftElbow = poses[0].keypoints[7];
-    rightElbow = poses[0].keypoints[8];
-    if ((rightShoulder.y >= rightElbow.y) && (leftShoulder.y >= leftElbow.y)) {
-      stage = "pushDown";
-    }
-
-    if (((rightShoulder.y < rightElbow.y) && (leftShoulder.y < leftElbow.y)) && (stage == "pushDown")) {
-      counter += 1;
-      stage = "pushUp";
+    else if ((mid > upperBound) && (stage == "jump")) {
+      stag2 = "crouch";
       game.inputTrigger.hasCurlInput = true;
     }
 
