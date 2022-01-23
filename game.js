@@ -9,7 +9,7 @@ class Blood extends GameObjects {
         super();
 
         var bloodSprite = new Image();
-        bloodSprite.src = './Blood2.png';
+        bloodSprite.src = './GameAssets/Blood2.png';
 
         this.scale = 0.5;
         this.flipped = flipped;
@@ -30,16 +30,16 @@ class Enemy extends GameObjects {
         this.position = new Vector2(x, y);
 
         var enemyWalk = new Image();
-        enemyWalk.src = './EnemyWalk.png';
+        enemyWalk.src = './GameAssets/EnemyWalk.png';
 
         var enemyAttack = new Image();
-        enemyAttack.src = './EnemyAttack.png';
+        enemyAttack.src = './GameAssets/EnemyAttack.png';
 
         var enemyIdle = new Image();
-        enemyIdle.src = './EnemyIdle.png';
+        enemyIdle.src = './GameAssets/EnemyIdle.png';
 
         var enemyDie = new Image();
-        enemyDie.src = './EnemyDie.png';
+        enemyDie.src = './GameAssets/EnemyDie.png';
 
         this.scale = 2;
 
@@ -177,13 +177,13 @@ class Player extends GameObjects {
         this.alive = true;
 
         var playerAttack = new Image();
-        playerAttack.src = './PlayerAttack.png';
+        playerAttack.src = './GameAssets/PlayerAttack.png';
 
         var playerIdle = new Image();
-        playerIdle.src = './PlayerIdle.png';
+        playerIdle.src = './GameAssets/PlayerIdle.png';
 
         var playerDie = new Image();
-        playerDie.src = './PlayerDie.png';
+        playerDie.src = './GameAssets/PlayerDie.png';
 
         this.keyboardState = new KeyboardState();
 
@@ -268,15 +268,15 @@ game.preload = function () {
 
     this.inputTrigger = new InputTrigger();
 
-    this.sounds.playerAttack = new Howl({ src: ['PlayerAttack.mp3'] });
-    this.sounds.enemyHit = new Howl({ src: ['EnemyHit.mp3'] });
-    this.sounds.enemySwing = new Howl({ src: ['EnemySwing.mp3'] });
-    this.sounds.enemyAttack = new Howl({ src: ['EnemyAttack.mp3'] });
-    this.sounds.enemyDie = new Howl({ src: ['EnemyDie.mp3'], volume: 0.25 });
-    this.sounds.playerBlood = new Howl({ src: ['Blood.mp3'], volume: 0.1 });
+    this.sounds.playerAttack = new Howl({ src: ['./GameAssets/PlayerAttack.mp3'] });
+    this.sounds.enemyHit = new Howl({ src: ['./GameAssets/EnemyHit.mp3'] });
+    this.sounds.enemySwing = new Howl({ src: ['./GameAssets/EnemySwing.mp3'] });
+    this.sounds.enemyAttack = new Howl({ src: ['./GameAssets/EnemyAttack.mp3'] });
+    this.sounds.enemyDie = new Howl({ src: ['./GameAssets/EnemyDie.mp3'], volume: 0.25 });
+    this.sounds.playerBlood = new Howl({ src: ['./GameAssets/Blood.mp3'], volume: 0.1 });
 
-    this.music.menuMusic = new Howl({ src: ['Ruins.mp3'], loop: true, volume: 0.1 });
-    this.music.gameMusic = new Howl({ src: ['Sorrows.mp3'], loop: true, volume: 0.25 });
+    this.music.menuMusic = new Howl({ src: ['./GameAssets/Ruins.mp3'], loop: true, volume: 0.1 });
+    this.music.gameMusic = new Howl({ src: ['./GameAssets/Sorrows.mp3'], loop: true, volume: 0.25 });
 
     this.backgroundColor = '#1A1A1A';
 
@@ -298,7 +298,7 @@ game.preload = function () {
     this.startTextPositionCounter = 0;
 
     this.ground = new Image();
-    this.ground.src = './GroundAlt.png';
+    this.ground.src = './GameAssets/GroundAlt.png';
 
     this.music.menuMusic.play();
 }
