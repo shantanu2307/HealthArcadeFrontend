@@ -1,51 +1,43 @@
+const video = document.getElementById('webcam');
+const liveView = document.getElementById('liveView');
+const demosSection = document.getElementById('demos');
+const enableWebcamButton = document.getElementById('webcamButton');
 
-let detector;
+let model = undefined;
 let poses;
-let video;
-let stage = ""
-let stage2 = ""
-let counter = 0;
-let can;
-function calculateAngle(a, b, c) {
-  const radians = Math.atan2(c[1] - b[1], c[0] - b[0]) - Math.atan2(a[1] - b[1], a[0] - b[0]);
-  var angle = Math.abs(radians * 180.0 / Math.PI);
-  if (angle > 180.0) {
-    angle = 360 - angle;
+let dectector;
+
+function getUserMediaSupported() {
+  return !!(navigator.mediaDevices &&
+    navigator.mediaDevices.getUserMedia);
+}
+if (getUserMediaSupported()) {
+  enableWebcamButton.addEventListener('click', enableCam);
+} else {
+  console.warn('getUserMedia() is not supported by your browser');
+}
+
+function enableCam(event) {
+  // Only continue if the COCO-SSD has finished loading.
+  if (!model) {
+    return;
   }
-  return angle
-}
+  // Hide the button once clicked.
+  event.target.classList.add('removed');
+  // getUsermedia parameters to force video but not audio.
+  const constraints = {
+    video: true
+  };
 
-
-async function init() {
-  detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, { modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER });
-}
-
-
-async function videoReady() {
-  console.log('video ready')
-  gameLoaded = true;
-  game.currentState = 'tutorial';
-  await getPoses();
-}
-
-async function setup() {
-  can = createCanvas(640, 480);
-  can.id('mycanvas');
-  can.parent('alpha');
-  await init();
-  video = createCapture(VIDEO, videoReady);
-  video.size(640, 480);
-  video.hide();
+  // Activate the webcam stream.
+  navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+    video.srcObject = stream;
+    video.addEventListener('loadeddata', predictWebcam);
+  });
 
 }
 
-
-async function getPoses() {
-  poses = await detector.estimatePoses(video.elt);
-  setTimeout(getPoses, 0);
-}
-
-function draw() {
+async function draw() {
   background(0);
   if (poses && poses.length > 0) {
 
@@ -167,3 +159,21 @@ function draw() {
 
 }
 
+
+
+async function predictWebcam() {
+  poses = await detector.estimatePoses(video);
+  await draw();
+  window.requestAnimationFrame(predictWebcam);
+
+}
+
+async function init() {
+  detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING });
+  model = true;
+  gameLoaded = true;
+  game.currentState = 'tutorial';
+  demosSection.classList.remove('invisible');
+}
+
+init();
