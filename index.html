@@ -15,18 +15,12 @@
     <script src="./PoseDetection/pose-detection"></script>
   </head>
   <body>
-    <div style="display: flex; justify-content: center; align-content: center">
-      <div class="container">
-        <canvas class="game" id="canvas" height="384px"></canvas>
-        <div class="loading"></div>
+    <div class="container">
+      <canvas class="game" id="canvas" height="384px"></canvas>
+      <div id="liveView" class="webcam">
+        <video id="webcam" autoplay width="640" height="480"></video>
+        <canvas id="webcamCanvas" width="640" height="480"></canvas>
       </div>
-      <section id="demos" class="invisible">
-        <div id="liveView" class="webcam">
-          <button id="webcamButton">Enable Webcam</button>
-          <video id="webcam" autoplay width="640" height="480"></video>
-          <canvas id="webcamCanvas" width="640" height="480"></canvas>
-        </div>
-      </section>
     </div>
     <script src="./engine.js"></script>
     <script src="./game.js"></script>
