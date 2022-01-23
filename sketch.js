@@ -17,7 +17,7 @@ function calculateAngle(a, b, c) {
 
 
 async function init() {
-  detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING });
+  detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, { modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER });
 }
 
 
@@ -162,27 +162,6 @@ function draw() {
       counter += 1
       game.inputTrigger.hasCurlInput = true;
     }
-
-    //Jump-Crouch Detection 
-
-    //Left side
-    /*leftShoulder = Number(poses[0].keypoints[5].y);
-    //Right Side
-    rightShoulder = Number(poses[0].keypoints[6].y);
-    var mid = Number((leftShoulder + rightShoulder) / 2);
-    console.log(mid);
-    var upperBound = 355;
-    var lowerBound = 150;*/
-
-    /*if (mid < lowerBound) {
-      stage2 = "jump";
-      game.inputTrigger.hasCurlInput = true;
-    }
-    
-    if (mid > upperBound) {
-      stage2 = "crouch";
-      game.inputTrigger.hasCurlInput = true;
-    }*/
 
   }
 
