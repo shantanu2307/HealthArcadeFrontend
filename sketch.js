@@ -18,7 +18,7 @@ function calculateAngle(a, b, c) {
 
 
 async function init() {
-  detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING });
+  detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, { modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER });
 }
 
 
@@ -161,10 +161,6 @@ function draw() {
       counter += 1
       game.inputTrigger.hasCurlInput = true;
     }
-
-    //Jump Detection
-
-    
   }
 
 }

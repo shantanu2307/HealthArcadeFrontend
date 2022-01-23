@@ -7,8 +7,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script src="p5.js"></script>
-    <script src="p5.sound.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <meta charset="utf-8" />
     <script src="tfjs-core"></script>
@@ -22,12 +20,16 @@
         <canvas class="game" id="canvas" height="384px"></canvas>
         <div class="loading"></div>
       </div>
-      <div id="alpha">
-        <canvas id="mycanvas" style=""></canvas>
-      </div>
+      <section id="demos" class="invisible">
+        <div id="liveView" class="webcam">
+          <button id="webcamButton">Enable Webcam</button>
+          <video id="webcam" autoplay width="640" height="480"></video>
+          <canvas id="webcamCanvas" width="640" height="480"></canvas>
+        </div>
+      </section>
     </div>
     <script src="./engine.js"></script>
     <script src="./game.js"></script>
-    <script src="./sketch.js"></script>
+    <script src="./script.js"></script>
   </body>
 </html>
