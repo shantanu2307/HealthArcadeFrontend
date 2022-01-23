@@ -6,6 +6,7 @@ let stage = ""
 let stage2 = ""
 let counter = 0;
 let can;
+
 function calculateAngle(a, b, c) {
   const radians = Math.atan2(c[1] - b[1], c[0] - b[0]) - Math.atan2(a[1] - b[1], a[0] - b[0]);
   var angle = Math.abs(radians * 180.0 / Math.PI);
@@ -36,9 +37,7 @@ async function setup() {
   video = createCapture(VIDEO, videoReady);
   video.size(640, 480);
   video.hide();
-
 }
-
 
 async function getPoses() {
   poses = await detector.estimatePoses(video.elt);
@@ -163,27 +162,9 @@ function draw() {
       game.inputTrigger.hasCurlInput = true;
     }
 
-    //Jump-Crouch Detection 
+    //Jump Detection
 
-    //Left side
-    /*leftShoulder = Number(poses[0].keypoints[5].y);
-    //Right Side
-    rightShoulder = Number(poses[0].keypoints[6].y);
-    var mid = Number((leftShoulder + rightShoulder) / 2);
-    console.log(mid);
-    var upperBound = 355;
-    var lowerBound = 150;*/
-
-    /*if (mid < lowerBound) {
-      stage2 = "jump";
-      game.inputTrigger.hasCurlInput = true;
-    }
     
-    if (mid > upperBound) {
-      stage2 = "crouch";
-      game.inputTrigger.hasCurlInput = true;
-    }*/
-
   }
 
 }
