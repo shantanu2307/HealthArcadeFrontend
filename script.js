@@ -1,7 +1,6 @@
 const video = document.getElementById('webcam');
 const liveView = document.getElementById('liveView');
-const demosSection = document.getElementById('demos');
-const enableWebcamButton = document.getElementById('webcamButton');
+
 const webcamCanvas = document.getElementById('webcamCanvas');
 const webCanCtx = webcamCanvas.getContext('2d');
 
@@ -27,19 +26,12 @@ function getUserMediaSupported() {
   return !!(navigator.mediaDevices &&
     navigator.mediaDevices.getUserMedia);
 }
-if (getUserMediaSupported()) {
-  enableWebcamButton.addEventListener('click', enableCam);
-} else {
-  console.warn('getUserMedia() is not supported by your browser');
-}
 
-function enableCam(event) {
+function enableCam() {
   // Only continue if the COCO-SSD has finished loading.
   if (!model) {
     return;
   }
-  // Hide the button once clicked.
-  event.target.classList.add('removed');
   // getUsermedia parameters to force video but not audio.
   const constraints = {
     video: true
@@ -50,8 +42,6 @@ function enableCam(event) {
     video.srcObject = stream;
     video.addEventListener('loadeddata', predictWebcam);
   });
-
-  video.style.transform = 'scaleX(-1);';
 }
 
 function drawLine(x1, y1, x2, y2, color = '#FFFFFF', lineWidth = 2) {
@@ -171,14 +161,19 @@ async function predictWebcam() {
   webCanCtx.clearRect(0, 0, webcamCanvas.clientWidth, webcamCanvas.clientHeight);
   await draw();
   window.requestAnimationFrame(predictWebcam);
+  
+  gameLoaded = true;
 }
 
 async function init() {
   detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING });
   model = true;
-  gameLoaded = true;
-  game.currentState = 'tutorial';
-  demosSection.classList.remove('invisible');
+
+  if (getUserMediaSupported()) {
+    enableCam();
+  } else {
+    console.warn('getUserMedia() is not supported by your browser');
+  }
 }
 
 init();
