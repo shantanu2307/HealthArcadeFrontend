@@ -6,6 +6,7 @@ let stage = ""
 let stage2 = ""
 let counter = 0;
 let can;
+
 function calculateAngle(a, b, c) {
   const radians = Math.atan2(c[1] - b[1], c[0] - b[0]) - Math.atan2(a[1] - b[1], a[0] - b[0]);
   var angle = Math.abs(radians * 180.0 / Math.PI);
@@ -36,9 +37,7 @@ async function setup() {
   video = createCapture(VIDEO, videoReady);
   video.size(640, 480);
   video.hide();
-
 }
-
 
 async function getPoses() {
   poses = await detector.estimatePoses(video.elt);
@@ -162,7 +161,6 @@ function draw() {
       counter += 1
       game.inputTrigger.hasCurlInput = true;
     }
-
   }
 
 }

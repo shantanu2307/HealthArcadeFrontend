@@ -355,11 +355,20 @@ game.drawGame = function () {
 
     Primitives2D.drawText(this.score.toString(), 150 - (this.score.toString().length * 18) / 2, 96, '#FFFFFF', '36px Arcadia-Regular');
 
-    if (!this.player.alive) { 
+    if (!this.player.alive) {
+        Primitives2D.drawText('Best', 150 - ('Best'.length * 9) / 2, 220 + 3 * Math.sin((this.startTextPositionCounter + 128) / 6), '#FF0000', '12px Arcadia-Regular'); 
+        Primitives2D.drawText('Best', 150 - ('Best'.length * 9) / 2, 220 + 3 * Math.sin((this.startTextPositionCounter + 96) / 6), '#0000FF', '12px Arcadia-Regular');
         Primitives2D.drawText('Best', 150 - ('Best'.length * 9) / 2, 220 + 3 * Math.sin((this.startTextPositionCounter + 64) / 6), '#FFFFFF', '12px Arcadia-Regular');
+
+        Primitives2D.drawText(this.highScore.toString(), 150 - (this.highScore.toString().length * 32) / 2, 272 + 3 * Math.sin((this.startTextPositionCounter + 128) / 6), '#FF0000', '48px Arcadia-Regular');
+        Primitives2D.drawText(this.highScore.toString(), 150 - (this.highScore.toString().length * 32) / 2, 272 + 3 * Math.sin((this.startTextPositionCounter + 96) / 6), '#0000FF', '48px Arcadia-Regular');
         Primitives2D.drawText(this.highScore.toString(), 150 - (this.highScore.toString().length * 32) / 2, 272 + 3 * Math.sin((this.startTextPositionCounter + 64) / 6), '#FFFFFF', '48px Arcadia-Regular');
 
-        if (this.score === this.highScore) Primitives2D.drawText('New Best', 150 - ('New Best'.length * 9) / 2, 298 + 3 * Math.sin((this.startTextPositionCounter + 64) / 6), '#FFFFFF', '12px Arcadia-Regular');
+        if (this.score === this.highScore) {
+            Primitives2D.drawText('New Best!', 150 - ('New Best!'.length * 9) / 2, 298 + 3 * Math.sin((this.startTextPositionCounter + 128) / 6), '#FF0000', '12px Arcadia-Regular');
+            Primitives2D.drawText('New Best!', 150 - ('New Best!'.length * 9) / 2, 298 + 3 * Math.sin((this.startTextPositionCounter + 96) / 6), '#0000FF', '12px Arcadia-Regular');
+            Primitives2D.drawText('New Best!', 150 - ('New Best!'.length * 9) / 2, 298 + 3 * Math.sin((this.startTextPositionCounter + 64) / 6), '#FFFFFF', '12px Arcadia-Regular');
+        }
     }
 
     if(!this.isRunning) Primitives2D.drawText(this.startText, 150 - (this.startText.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
