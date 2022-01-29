@@ -5,7 +5,7 @@ class InputTrigger {
 }
 
 class Blood extends GameObjects {
-    constructor (x, y, flipped) {
+    constructor(x, y, flipped) {
         super();
 
         var bloodSprite = new Image();
@@ -74,13 +74,13 @@ class Enemy extends GameObjects {
 
         this.rectangle = new Rectangle(this.flipped ? this.position.x - 34 * this.scale : this.position.x + 22 * this.scale, this.position.y + 12 * this.scale, 10 * this.animations[this.currentAnimation].scale, 18 * this.animations[this.currentAnimation].scale);
         if (Rectangle.intersects(game.player.swordRect, this.rectangle)) {
-            if (this.currentAnimation !== 'die') { 
-                game.sounds.enemyHit.play(); 
-                game.sounds.enemyDie.play(); 
-                game.score++; 
-                game.shake(100); 
+            if (this.currentAnimation !== 'die') {
+                game.sounds.enemyHit.play();
+                game.sounds.enemyDie.play();
+                game.score++;
+                game.shake(100);
 
-                this.bloods.push(new Blood( this.flipped ? this.position.x - 2.5 * this.rectangle.width : this.position.x + 2.5 * this.rectangle.width, this.position.y, !this.flipped));
+                this.bloods.push(new Blood(this.flipped ? this.position.x - 2.5 * this.rectangle.width : this.position.x + 2.5 * this.rectangle.width, this.position.y, !this.flipped));
             }
 
             this.playAnimation('die');
@@ -117,7 +117,7 @@ class Enemy extends GameObjects {
 
         this.bloods.forEach((blood) => {
             blood.draw();
-        });      
+        });
     }
 }
 
@@ -125,7 +125,7 @@ class EnemyGenerator {
     constructor() {
         this.enemies = [];
         this.enemyTimer = 100;
-        this.enemyDelay = 100; //20
+        this.enemyDelay = 100;
 
         this.lastSide = 'left';
     }
@@ -219,7 +219,7 @@ class Player extends GameObjects {
             if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) {
                 setTimeout(() => { game.isRunning = true; game.music.gameMusic.play(); game.music.menuMusic.stop(); }, 100);
             }
-            
+
             super.update();
             return;
         }
@@ -356,7 +356,7 @@ game.drawGame = function () {
     Primitives2D.drawText(this.score.toString(), 150 - (this.score.toString().length * 18) / 2, 96, '#FFFFFF', '36px Arcadia-Regular');
 
     if (!this.player.alive) {
-        Primitives2D.drawText('Best', 150 - ('Best'.length * 9) / 2, 220 + 3 * Math.sin((this.startTextPositionCounter + 128) / 6), '#FF0000', '12px Arcadia-Regular'); 
+        Primitives2D.drawText('Best', 150 - ('Best'.length * 9) / 2, 220 + 3 * Math.sin((this.startTextPositionCounter + 128) / 6), '#FF0000', '12px Arcadia-Regular');
         Primitives2D.drawText('Best', 150 - ('Best'.length * 9) / 2, 220 + 3 * Math.sin((this.startTextPositionCounter + 96) / 6), '#0000FF', '12px Arcadia-Regular');
         Primitives2D.drawText('Best', 150 - ('Best'.length * 9) / 2, 220 + 3 * Math.sin((this.startTextPositionCounter + 64) / 6), '#FFFFFF', '12px Arcadia-Regular');
 
@@ -371,14 +371,14 @@ game.drawGame = function () {
         }
     }
 
-    if(!this.isRunning) Primitives2D.drawText(this.startText, 150 - (this.startText.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
+    if (!this.isRunning) Primitives2D.drawText(this.startText, 150 - (this.startText.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
 }
 
 game.drawTutorial = function () {
     SpriteBatch.draw(this.ground, new Rectangle(0, canvas.height - 36, canvas.width, 36));
     this.player.draw();
 
-    if(!this.isRunning) Primitives2D.drawText(this.startText, 150 - (this.startText.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
+    if (!this.isRunning) Primitives2D.drawText(this.startText, 150 - (this.startText.length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 12), '#FFFFFF', '12px Arcadia-Regular');
     else {
         Primitives2D.drawText(this.tutorialTexts[this.tutorialIndex], 150 - (this.tutorialTexts[this.tutorialIndex].length * 9) / 2, 272 + 6 * Math.sin(this.startTextPositionCounter / 16), '#FFFFFF', '12px Arcadia-Regular');
     }
