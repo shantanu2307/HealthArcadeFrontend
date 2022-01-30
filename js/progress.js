@@ -1,6 +1,9 @@
 // Function to create random data in format: [date, amount]
 async function createData() {
   const authToken = localStorage.getItem('authtoken');
+  if (!authToken) {
+    window.location.href = "./login.html";
+  }
   const response = await axios.get('http://localhost:5000/api/records', {
     headers: {
       'auth-token': authToken
@@ -111,7 +114,7 @@ async function getStats() {
         attr('fill', color);
       tooltip.
         style('display', 'inherit').
-        text(`$${d.amount}`).
+        text(`${d.amount}`).
         style('top', `${y(d.amount) - axisOffset}px`);
 
       let bandwidth = x.bandwidth();
