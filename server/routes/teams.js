@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post('/getteamleaderboard', fetchuser, async (req, res) => {
   try {
+    s
     // Return all time highest
     const members = await Groups.getMembers(req.body.teamid);
     var answer = [];

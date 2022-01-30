@@ -201,18 +201,34 @@ class Player extends GameObjects {
         this.canPlayBloodSound = true;
     }
 
-    update() {
+    async update() {
         if (!this.alive && this.currentAnimation !== 'die') {
             game.sounds.enemyAttack.play();
             this.playAnimation('die');
             game.shake(200);
-
+            const authToken = localStorage.getItem('authtoken');
+            console.log(authToken);
+            const date = new Date().toLocaleDateString().split('/').reverse().join('-');
+            await axios.post('http://localhost:5000/api/records', {
+                reps: game.score,
+                date: date
+            }, {
+                headers: {
+                    'auth-token': authToken
+                }
+            });
             game.music.gameMusic.stop();
             game.music.menuMusic.play();
         }
 
         if (!this.alive && this.currentAnimation === 'die') {
-            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) { game.music.menuMusic.stop(); game.preload(); game.isRunning = true; game.music.menuMusic.stop(); game.music.gameMusic.play(); }
+            if (this.keyboardState.isKeyDown('Space') || game.inputTrigger.hasCurlInput) {
+                game.music.menuMusic.stop();
+                game.preload();
+                game.isRunning = true;
+                game.music.menuMusic.stop();
+                game.music.gameMusic.play();
+            }
         }
 
         if (!game.isRunning) {
