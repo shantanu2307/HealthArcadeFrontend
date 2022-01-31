@@ -4,11 +4,24 @@ const Users = require('../models/userHelper')
 const Groups = require('../models/groupHelper');
 const router = express.Router();
 
-//Add a random generator @KshitijVikramSingh
+//random string generator
+
+function makeid(length) {
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() *
+      charactersLength));
+  }
+  return result;
+}
+
+
+
 
 router.post('/getteamleaderboard', fetchuser, async (req, res) => {
   try {
-    s
     // Return all time highest
     const members = await Groups.getMembers(req.body.teamid);
     var answer = [];
@@ -29,7 +42,7 @@ router.post('/getteamleaderboard', fetchuser, async (req, res) => {
 // ALlow user to create a team
 router.get('/createteam', fetchuser, async (req, res) => {
   try {
-    const teamid = req.user.username + Date.now();
+    const teamid = makeid(8);
     const records = await Groups.validationHelper(req.user.username, teamid);
     if (records.length > 0) {
       return res.send({ message: "Already in the group" });

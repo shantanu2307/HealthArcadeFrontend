@@ -12,6 +12,27 @@
       crossorigin="anonymous"
     />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./js/teams.js"></script>
+    <link rel="stylesheet" href="./css/teams.css" />
   </head>
-  <body></body>
+  <body onload="getTeams()">
+    <div class="container">
+      <h1>Teams Page</h1>
+      <div class="d-flex mt-lg-5 flex justify-content-center">
+        <h4>My Teams:</h4>
+        <select class="w-50" id="myteams"></select>
+      </div>
+    </div>
+    <div class="container">
+      <div class="d-flex mt-lg-5 flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-danger"
+          onclick="createTeam(event)"
+        >
+          Create New Team
+        </button>
+      </div>
+    </div>
+  </body>
 </html>
