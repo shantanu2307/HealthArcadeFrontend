@@ -5,6 +5,10 @@
 
 
 async function renderLeaderboard() {
+  const authToken = localStorage.getItem('authtoken');
+  if (!authToken) {
+    window.location.href = './login.html'
+  }
   const leaderBoardType = document.getElementById('leaderboardType');
   const date = document.getElementById('date');
   const table = document.getElementById('table-body');
@@ -13,7 +17,6 @@ async function renderLeaderboard() {
     table.removeChild(fc);
     fc = table.firstChild;
   }
-  const authToken = localStorage.getItem('authtoken');
   const response = await axios.post('http://localhost:5000/api/leaderboard', {
     "leaderBoardType": leaderBoardType.value,
     "date": date.value
