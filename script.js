@@ -41,6 +41,7 @@ function enableCam() {
   navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
     video.srcObject = stream;
     video.addEventListener('loadeddata', predictWebcam);
+    gameLoaded = true;
   });
 }
 
@@ -153,20 +154,18 @@ async function draw() {
     }
 
   }
-
 }
 
 async function predictWebcam() {
   poses = await detector.estimatePoses(video);
   webCanCtx.clearRect(0, 0, webcamCanvas.clientWidth, webcamCanvas.clientHeight);
   await draw();
+  game.loop();
   window.requestAnimationFrame(predictWebcam);
-  
-  gameLoaded = true;
 }
 
 async function init() {
-  detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING });
+  detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet);
   model = true;
 
   if (getUserMediaSupported()) {
