@@ -336,7 +336,12 @@ class Game {
 
     run() {
         this.preload();
-        setInterval(() => { this.update(); this.drawLoop(); }, 1000 / 60);
+        //setInterval(() => this.loop(), 1000 / 60);
+    }
+
+    loop () {
+        this.update();
+        this.drawLoop();
     }
 
     preload() {
