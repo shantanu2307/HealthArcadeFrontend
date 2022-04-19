@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teams Page</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./js/teams.js"></script>
+    <link rel="stylesheet" href="./css/teams.css" />
+  </head>
+  <body onload="getTeams()">
+    <div class="container">
+      <h1>Teams Page</h1>
+      <div class="d-flex mt-lg-5 flex justify-content-center">
+        <h4>My Teams:</h4>
+        <select class="w-50" id="myteams"></select>
+      </div>
+    </div>
+    <div class="container">
+      <div class="d-flex mt-lg-5 flex justify-content-center">
+        <button
+          type="button"
+          class="btn btn-danger"
+          onclick="createTeam(event)"
+        >
+          Create New Team
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
